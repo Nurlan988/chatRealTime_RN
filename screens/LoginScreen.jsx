@@ -9,6 +9,8 @@ import { UserTextInput } from "../components";
 import { screenWith } from "../utils/constants";
 import { firebaseAuth, firestoreDB } from "../config/firebase.config";
 import { gStyle } from "../styles/global";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/actions/userActions";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
@@ -20,6 +22,7 @@ export default function LoginScreen() {
     const [alertMsg, setAlertMsg] = useState("");
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         if (getEmailValidationStatus && email.length) {
@@ -34,6 +37,7 @@ export default function LoginScreen() {
                                     setAlert(!alert);
                                 }
                                 console.log("UserData", docSnap.data());
+                                dispatch(setUser(docSnap.data()));
                             }
                         });
                     }
