@@ -3,7 +3,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
 
-import { HomeScreen, LoginScreen, SignUpScreen, SplashScreen } from "./screens";
+import {
+    AddToChatScreen,
+    ChatScreen,
+    HomeScreen,
+    LoginScreen,
+    SignUpScreen,
+    SplashScreen,
+} from "./screens";
 import store from "./store/store";
 
 const Stack = createNativeStackNavigator();
@@ -23,9 +30,14 @@ export default function App() {
                         component={SignUpScreen}
                     />
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                    <Stack.Screen
+                        name="AddToChatScreen"
+                        component={AddToChatScreen}
+                    />
+                    <Stack.Screen name="ChatScreen" component={ChatScreen} />
                 </Stack.Navigator>
             </Provider>
-            <StatusBar style="light" />
+            <StatusBar style="auto" />
         </NavigationContainer>
     );
 }
