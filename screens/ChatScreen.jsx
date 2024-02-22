@@ -16,11 +16,7 @@ import {
     FontAwesome,
     Entypo,
 } from "@expo/vector-icons";
-
-import tw from "twrnc";
-import { gStyle } from "../styles/global";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 import {
     addDoc,
     collection,
@@ -30,6 +26,10 @@ import {
     query,
     serverTimestamp,
 } from "firebase/firestore";
+import { useSelector } from "react-redux";
+
+import tw from "twrnc";
+import { gStyle } from "../styles/global";
 import { firestoreDB } from "../config/firebase.config";
 import { screenHeight } from "../utils/constants";
 
@@ -264,17 +264,15 @@ const ChatScreen = ({ route }) => {
                                                     >
                                                         <View
                                                             style={[
-                                                                tw`px-4 py-2 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl relative w-auto`,
+                                                                tw`px-4 py-2 rounded-tl-2xl bg-gray-200 rounded-tr-2xl rounded-bl-2xl relative w-auto`,
                                                                 {
-                                                                    backgroundColor:
-                                                                        gStyle.primary,
                                                                     alignSelf:
                                                                         "flex-start",
                                                                 },
                                                             ]}
                                                         >
                                                             <Text
-                                                                style={tw`text-base font-semibold text-white`}
+                                                                style={tw`text-base font-semibold text-black`}
                                                             >
                                                                 {msg.message}
                                                             </Text>

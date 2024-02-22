@@ -12,6 +12,7 @@ import {
     SplashScreen,
 } from "./screens";
 import store from "./store/store";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,10 @@ export default function App() {
                         component={SignUpScreen}
                     />
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                    <Stack.Screen
+                        name="ProfileScreen"
+                        component={ProfileScreen}
+                    />
                     <Stack.Screen
                         name="AddToChatScreen"
                         component={AddToChatScreen}

@@ -52,6 +52,7 @@ export default function HomeScreen() {
                         resizeMode="contain"
                     />
                     <TouchableOpacity
+                        onPress={() => navigation.navigate("ProfileScreen")}
                         style={[
                             tw`w-12 h-12 rounded-full border flex items-center justify-center`,
                             { borderColor: gStyle.primary },
