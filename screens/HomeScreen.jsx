@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
@@ -16,13 +16,15 @@ import tw from "twrnc";
 import { MessageCard } from "../components";
 import { firestoreDB } from "../config/firebase.config";
 import { gStyle } from "../styles/global";
+import { setChats } from "../store/actions/chatActions";
 
 export default function HomeScreen() {
     const user = useSelector((state) => state.user.user);
+    const chats = useSelector((state) => state.chats.chats);
     const [isLoading, setIsLoading] = useState(true);
-    const [chats, setChats] = useState(null);
 
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     useLayoutEffect(() => {
         const chatQuery = query(
@@ -32,7 +34,7 @@ export default function HomeScreen() {
 
         const unsubscribe = onSnapshot(chatQuery, (querySnapShot) => {
             const chatRooms = querySnapShot.docs.map((doc) => doc.data());
-            setChats(chatRooms);
+            dispatch(setChats(chatRooms));
             setIsLoading(false);
         });
 
@@ -114,7 +116,9 @@ export default function HomeScreen() {
                                         ))}
                                     </>
                                 ) : (
-                                    <></>
+                                    <>
+                                        <Text>Create new Chat</Text>
+                                    </>
                                 )}
                             </>
                         )}

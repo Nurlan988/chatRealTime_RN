@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     TextInput,
     Image,
+    Keyboard,
 } from "react-native";
 import {
     MaterialIcons,
@@ -31,7 +32,6 @@ import { useSelector } from "react-redux";
 import tw from "twrnc";
 import { gStyle } from "../styles/global";
 import { firestoreDB } from "../config/firebase.config";
-import { screenHeight } from "../utils/constants";
 
 const ChatScreen = ({ route }) => {
     const { room } = route.params;
@@ -51,6 +51,12 @@ const ChatScreen = ({ route }) => {
         }
     };
 
+    useEffect(() => {
+        Keyboard.addListener("keyboardDidShow", () => {
+            scrollEndRef.current?.scrollToEnd({ animated: true });
+        });
+    }, [Keyboard]);
+
     const sendMessage = async () => {
         if (!message) return;
         const timeStamp = serverTimestamp();
@@ -67,10 +73,13 @@ const ChatScreen = ({ route }) => {
             collection(doc(firestoreDB, "chats", room._id), "messages"),
             _doc
         )
-            .then(() => {})
+            .then((data) => {
+                console.log("data", data);
+            })
             .catch((err) => {
                 throw new Error(err);
             });
+        Keyboard.dismiss();
     };
 
     useLayoutEffect(() => {
@@ -89,14 +98,14 @@ const ChatScreen = ({ route }) => {
     }, []);
 
     useEffect(() => {
-        scrollEndRef.current?.scrollTo({ y: screenHeight, animated: true });
-    }, [messages]);
+        scrollEndRef.current?.scrollToEnd({ animated: false });
+    }, [messages, isLoading]);
 
     return (
         <View style={tw`flex-1`}>
             <View
                 style={[
-                    tw`w-full px-4 py-6 flex-0.2`,
+                    tw`w-full px-4 py-6 flex`,
                     { backgroundColor: gStyle.primary },
                 ]}
             >
@@ -167,7 +176,7 @@ const ChatScreen = ({ route }) => {
                     </View>
                 </View>
             </View>
-            {/* bottom sectioln */}
+            {/* bottom section */}
             <View
                 style={tw`w-full bg-white px-4 py-6 rounded-3xl flex-1 rounded-t-50px -mt-10`}
             >

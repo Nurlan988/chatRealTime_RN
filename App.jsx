@@ -1,18 +1,18 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { Provider } from "react-redux";
-
 import {
     AddToChatScreen,
     ChatScreen,
     HomeScreen,
     LoginScreen,
+    ProfileScreen,
     SignUpScreen,
     SplashScreen,
 } from "./screens";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { Provider } from "react-redux";
+
 import store from "./store/store";
-import ProfileScreen from "./screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 

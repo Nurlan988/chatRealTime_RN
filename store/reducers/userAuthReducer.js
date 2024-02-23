@@ -1,7 +1,8 @@
-import { SET_USER, SET_USER_NULL } from "../constants";
+import { SET_IS_LOADING, SET_USER, SET_USER_NULL } from "../constants";
 
 const initialState = {
     user: {},
+    isLoading: false,
 };
 
 const userAuthReducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const userAuthReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: null,
+            };
+        case SET_IS_LOADING:
+            return {
+                ...state,
+                isLoading: !state.isLoading,
             };
         default:
             return state;

@@ -1,31 +1,32 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { doc, getDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import tw from "twrnc";
 
-import { UserTextInput } from "../components";
+import { Loading, UserTextInput } from "../components";
 import { screenWith } from "../utils/constants";
 import { firebaseAuth, firestoreDB } from "../config/firebase.config";
 import { gStyle } from "../styles/global";
-import { useDispatch } from "react-redux";
-import { setUser } from "../store/actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsLoading, setUser } from "../store/actions/userActions";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [getEmailValidationStatus, setGetEmailValidationStatus] =
         useState(false);
-
     const [alert, setAlert] = useState(false);
     const [alertMsg, setAlertMsg] = useState("");
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const isLoading = useSelector((state) => state.user.isLoading);
 
     const handleLogin = async () => {
         if (getEmailValidationStatus && email.length) {
+            dispatch(setIsLoading(true));
             await signInWithEmailAndPassword(firebaseAuth, email, password)
                 .then((userCred) => {
                     if (userCred) {
@@ -49,10 +50,21 @@ export default function LoginScreen() {
                         setAlertMsg("Invalid Email or Password");
                     } else if (err.message.includes("user-not-found")) {
                         setAlertMsg("User Not Found");
+                    } else if (err.message.includes("invalid-email")) {
+                        setAlert(true);
+                        setAlertMsg("Invalid Email");
+                    } else if (err.message.includes("invalid-password")) {
+                        setAlert(true);
+                        setGetEmailValidationStatus(true);
+                        setAlertMsg("Invalid Password");
                     }
+                    dispatch(setIsLoading(false));
                     setInterval(() => {
                         setAlert(false);
                     }, 2000);
+                })
+                .finally(() => {
+                    dispatch(setIsLoading(false));
                 });
         }
     };
@@ -153,6 +165,7 @@ export default function LoginScreen() {
                     </View>
                 </View>
             </ScrollView>
+            {isLoading && <Loading />}
         </View>
     );
 }
